@@ -27,6 +27,11 @@ func main() {
 	// Prepare node connections.
 	nodeConns := wsApi.NewNodeConns(node, remoteNodeAddress)
 
+	// Add factories.
+	if err := node.AddFactory(wsApi.NewWSFactory(nodeConns)); err != nil {
+		log.Fatal(err)
+	}
+
 	// Prepare node.
 	if err := dom.LoadFromDir("./domain", true); err != nil {
 		log.Fatal(err)
