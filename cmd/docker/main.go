@@ -5,7 +5,7 @@ import (
 	"context"
 	"github.com/Bitspark/go-bitnode/api/wsApi"
 	"github.com/Bitspark/go-bitnode/bitnode"
-	"github.com/Bitspark/go-bitnode/library"
+	"github.com/Bitspark/go-bitnode/factories"
 	"github.com/Bitspark/go-bitnode/store"
 	"log"
 	"os"
@@ -19,7 +19,7 @@ func main() {
 	remoteNodeAddress := os.Getenv("BITNODE_REMOTE_ADDRESS")
 
 	node := bitnode.NewNode()
-	node.AddMiddlewares(library.GetMiddlewares())
+	node.AddMiddlewares(factories.GetMiddlewares())
 
 	dom := bitnode.NewDomain()
 	dom, _ = dom.AddDomain("hub")

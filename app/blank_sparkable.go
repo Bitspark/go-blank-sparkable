@@ -6,6 +6,7 @@ import (
 	"blank-sparkable/util"
 	"fmt"
 	"github.com/Bitspark/go-bitnode/bitnode"
+	"log"
 	"reflect"
 )
 
@@ -34,10 +35,12 @@ func (s *BlankSparkable) lifecycleCreate(vals ...bitnode.HubItem) error {
 }
 
 // lifecycleLoad is called when the container has been started (after lifecycleCreate) or restarted.
-func (s *BlankSparkable) lifecycleLoad(vals ...bitnode.HubItem) error {
+func (s *BlankSparkable) lifecycleLoad() error {
 	// TODO: Add startup logic here which is called after the spark has been created.
 
-	s.SetMessage("BlankSparkable running...")
+	log.Println("LOAD")
+
+	s.LogInfo("BlankSparkable running...")
 	s.SetStatus(bitnode.SystemStatusRunning)
 
 	return nil
@@ -95,7 +98,7 @@ func (s *BlankSparkable) Init() error {
 	}))
 
 	s.AddCallback(bitnode.LifecycleLoad, bitnode.NewNativeEvent(func(vals ...bitnode.HubItem) error {
-		return s.lifecycleLoad(vals...)
+		return s.lifecycleLoad()
 	}))
 
 	return nil
