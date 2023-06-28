@@ -19,9 +19,9 @@ type Domain struct {
 }
 
 // NewBlankSparkable creates a new BlankSparkable instance.
-func (blankDomain *Domain) NewBlankSparkable() (*BlankSparkable, error) {
+func (dom *Domain) NewBlankSparkable() (*BlankSparkable, error) {
 	// Get the BlankSparkable sparkable from the domain.
-	blankSblSpark, err := blankDomain.Domain.GetSparkable("fullBlankDomain.BlankSparkable")
+	blankSblSpark, err := dom.Domain.GetSparkable("fullBlankDomain.BlankSparkable")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -30,7 +30,7 @@ func (blankDomain *Domain) NewBlankSparkable() (*BlankSparkable, error) {
 	delete(blankSblSpark.Implementation, "docker")
 
 	// Prepare the BlankSparkable spark.
-	blankSblSpk, err := blankDomain.Node.PrepareSystem(bitnode.Credentials{}, *blankSblSpark)
+	blankSblSpk, err := dom.Node.PrepareSystem(bitnode.Credentials{}, *blankSblSpark)
 	if err != nil {
 		log.Fatal(err)
 	}
