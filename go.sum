@@ -1,5 +1,5 @@
-github.com/Bitspark/go-bitnode v0.0.0-20230628140631-c49649e4c18c h1:FtVNdxpEXhSmtCgUIRby3BfYKXiJH8wJqx/ZzfPHmDA=
-github.com/Bitspark/go-bitnode v0.0.0-20230628140631-c49649e4c18c/go.mod h1:Ka3DMh8irGO7k6sTtsMtZ8hn8mgK65npySaohQJFWZY=
+github.com/Bitspark/go-bitnode v0.0.0-20230628234805-139db37c18d8 h1:w8qITLXhaAa65DGQBqbcGhOxAu0NvOg9BR9H556L/jI=
+github.com/Bitspark/go-bitnode v0.0.0-20230628234805-139db37c18d8/go.mod h1:Ka3DMh8irGO7k6sTtsMtZ8hn8mgK65npySaohQJFWZY=
 github.com/chzyer/logex v1.2.0/go.mod h1:9+9sk7u7pGNWYMkh0hdiL++6OeibzJccyQU4p4MedaY=
 github.com/chzyer/readline v1.5.0/go.mod h1:x22KAscuvRqlLoK9CsoYsmxoXZMMFVyOl86cAH8qUic=
 github.com/chzyer/test v0.0.0-20210722231415-061457976a23/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=

@@ -2,7 +2,7 @@ module blank-sparkable
 
 go 1.20
 
-require github.com/Bitspark/go-bitnode v0.0.0-20230628140631-c49649e4c18c
+require github.com/Bitspark/go-bitnode v0.0.0-20230628234805-139db37c18d8
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
