@@ -20,7 +20,7 @@ type BlankSparkable struct {
 	// @@SPARKABLE_FIELDS@@
 }
 
-// BlankSparkable main method.
+// BlankSparkable internal methods.
 
 // run contains code which is run after BlankSparkable has been loaded.
 func (s *BlankSparkable) run() {
@@ -31,7 +31,7 @@ func (s *BlankSparkable) run() {
 	}
 }
 
-// BlankSparkable methods.
+// BlankSparkable interface methods.
 
 // @@METHOD_STUBS@@
 
