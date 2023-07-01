@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/Bitspark/go-bitnode/bitnode"
 	"reflect"
+	"time"
 )
 
 // Struct definition for BlankSparkable.
@@ -17,6 +18,17 @@ type BlankSparkable struct {
 	bitnode.System
 
 	// @@SPARKABLE_FIELDS@@
+}
+
+// BlankSparkable main method.
+
+// run contains code which is run after BlankSparkable has been loaded.
+func (s *BlankSparkable) run() {
+	for {
+		// Do something
+		s.LogInfo("Do BlankSparkable main operation")
+		time.Sleep(1 * time.Second)
+	}
 }
 
 // BlankSparkable methods.
@@ -30,6 +42,9 @@ type BlankSparkable struct {
 // lifecycleCreate is called when the container has been created.
 func (s *BlankSparkable) lifecycleCreate(vals ...bitnode.HubItem) error {
 	// TODO: Add startup logic here which is called when the spark is created.
+
+	s.LogInfo("Creating BlankSparkable...")
+
 	return nil
 }
 
@@ -37,8 +52,16 @@ func (s *BlankSparkable) lifecycleCreate(vals ...bitnode.HubItem) error {
 func (s *BlankSparkable) lifecycleLoad() error {
 	// TODO: Add startup logic here which is called after the spark has been created.
 
-	s.LogInfo("BlankSparkable running...")
-	s.SetStatus(bitnode.SystemStatusRunning)
+	s.LogInfo("Loading BlankSparkable...")
+
+	return nil
+}
+
+// lifecycleStop is called when the container is started.
+func (s *BlankSparkable) lifecycleStop() error {
+	// TODO: Add cleanup logic here which is called when the spark is stopped.
+
+	s.LogInfo("Stopping BlankSparkable...")
 
 	return nil
 }
@@ -95,7 +118,22 @@ func (s *BlankSparkable) Init() error {
 	}))
 
 	s.AddCallback(bitnode.LifecycleLoad, bitnode.NewNativeEvent(func(vals ...bitnode.HubItem) error {
-		return s.lifecycleLoad()
+		if err := s.lifecycleLoad(); err != nil {
+			return err
+		}
+
+		s.SetStatus(bitnode.SystemStatusRunning)
+
+		// Start the main method as a goroutine.
+		go s.run()
+
+		return nil
+	}))
+
+	s.AddCallback(bitnode.LifecycleStop, bitnode.NewNativeEvent(func(vals ...bitnode.HubItem) error {
+		s.SetStatus(bitnode.SystemStatusStopping)
+
+		return s.lifecycleStop()
 	}))
 
 	return nil

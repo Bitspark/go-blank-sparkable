@@ -11,7 +11,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 )
 
 func main() {
@@ -62,6 +61,7 @@ func main() {
 
 	var blankSbl *app.BlankSparkable
 
+	created := false
 	if len(node.Systems(creds)) == 0 {
 		var err error
 		blankSbl, err = blankDomain.NewBlankSparkable()
@@ -71,6 +71,8 @@ func main() {
 
 		// Make computer system the root system.
 		node.SetSystem(blankSbl.Native())
+
+		created = true
 	} else {
 		log.Printf("Found %d startup systems", len(node.Systems(creds)))
 
@@ -87,6 +89,17 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// Handle loading.
+	if created {
+		blankSbl.AddCallback(bitnode.LifecycleCreate, bitnode.NewNativeEvent(func(vals ...bitnode.HubItem) error {
+			return blankSbl.Native().EmitEvent(bitnode.LifecycleLoad)
+		}))
+	} else {
+		if err := blankSbl.Native().EmitEvent(bitnode.LifecycleLoad); err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	// Create server.
 	server := wsApi.NewServer(nodeConns, localAddress)
 
@@ -94,6 +107,13 @@ func main() {
 
 	go func() {
 		log.Println(server.Listen())
+
+		stopped := make(chan error)
+
+		// Emit stop callback.
+		go func() {
+			stopped <- node.System(creds).Native().EmitEvent(bitnode.LifecycleStop)
+		}()
 
 		// Create store.
 		st := store.NewStore("store")
@@ -111,7 +131,10 @@ func main() {
 			return
 		}
 
-		stored <- nil
+		_ = node.System(creds).Native().EmitEvent(bitnode.LifecycleStop)
+
+		err := <-stopped
+		stored <- err
 	}()
 
 	log.Printf("Listening on %s...", server.Address())
@@ -129,6 +152,4 @@ func main() {
 	if err := <-stored; err != nil {
 		log.Printf("Error storing node: %v", err)
 	}
-
-	time.Sleep(1 * time.Second)
 }
