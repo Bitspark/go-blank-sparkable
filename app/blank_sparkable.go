@@ -6,7 +6,6 @@ import (
 	"blank-sparkable/util"
 	"fmt"
 	"github.com/Bitspark/go-bitnode/bitnode"
-	"os"
 	"reflect"
 )
 
@@ -40,16 +39,6 @@ func (s *BlankSparkable) lifecycleLoad() error {
 
 	s.LogInfo("BlankSparkable running...")
 	s.SetStatus(bitnode.SystemStatusRunning)
-
-	return nil
-}
-
-// lifecycleStop is called when the container is started.
-func (s *BlankSparkable) lifecycleStop(timeout float64) error {
-	// TODO: Add cleanup logic here which is called when the spark is stopped.
-
-	s.SetStatus(bitnode.SystemStatusStopping)
-	os.Exit(0)
 
 	return nil
 }
@@ -107,11 +96,6 @@ func (s *BlankSparkable) Init() error {
 
 	s.AddCallback(bitnode.LifecycleLoad, bitnode.NewNativeEvent(func(vals ...bitnode.HubItem) error {
 		return s.lifecycleLoad()
-	}))
-
-	s.AddCallback(bitnode.LifecycleStop, bitnode.NewNativeEvent(func(vals ...bitnode.HubItem) error {
-		timeout := vals[0].(float64)
-		return s.lifecycleStop(timeout)
 	}))
 
 	return nil
